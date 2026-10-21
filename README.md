@@ -107,4 +107,4 @@ To enable GitHub Pages:
 1. Go to repository **Settings > Pages**.
 2. Under **Build and deployment > Source**, select **GitHub Actions**.
 3. The deployed site will be available at:
-   `https://musthabasm.github.io/little-lemon-table-booking/`
+[Live Demo](https://musthabasm.github.io/little-lemon-table-booking/)
