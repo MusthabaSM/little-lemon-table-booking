@@ -1,123 +1,110 @@
-# Little Lemon Restaurant — Meta Front-End Developer Capstone
+# Little Lemon Restaurant — Meta Front-End Capstone
 
-A responsive table reservation web application for **Little Lemon**, a family-owned Mediterranean restaurant based in Chicago, developed in adherence to the **Meta Front-End Developer Professional Certificate Capstone** specifications.
+A responsive table reservation web application for **Little Lemon**, a family-owned Mediterranean restaurant in Chicago, built in adherence to the **Meta Front-End Developer Capstone** specifications.
 
 ---
 
-## Features
+## Quick Start (How to Run Locally)
 
-- **Semantic HTML & WCAG Accessibility**: Full semantic elements (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<fieldset>`, `<footer>`), custom skip-links, ARIA live regions for form validation alerts, proper labels (`aria-label`, `aria-describedby`, `aria-required`), and full keyboard navigation.
-- **Dynamic Table Booking Engine**:
-  - `useReducer` managing available dining slots for any selected date (`initializeTimes`, `updateTimes`).
-  - Seeded pseudo-random slot generator (`fetchAPI`) compliant with Capstone guidelines.
-  - Interactive table settings (Standard, Booth, Outdoor Patio) and Occasions (Birthday, Anniversary, Engagement).
-  - Simulated reservation submission (`submitAPI`) with simulated network delay and local storage persistence.
-- **Robust Client-Side Validation**:
-  - Dual-layer validation: HTML5 constraint validation (`required`, `min`, `max`, `type`, `pattern`) combined with custom JavaScript validation functions.
-  - Live feedback upon input blur and comprehensive accessible error summary banners upon submission attempts.
-- **Visual Design & Typography**:
-  - Official Little Lemon typography featuring **Markazi Text** for headings and **Karla** for interface/body text.
-  - Authentic Little Lemon color system (Primary Lemon Green `#495E57`, Primary Lemon Yellow `#F4CE14`, Salmon `#EE9972`, Peach `#FBDABB`).
-  - Responsive layouts from mobile screens up to desktop viewports.
-- **Automated Test Suite**:
-  - 100% passing Vitest test suite with React Testing Library verifying static text, HTML5 attributes, JavaScript validation functions, reducer state transitions, and form submission flows.
+Follow these steps to run the application and test suite locally:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/MusthabaSM/little-lemon-table-booking.git
+   cd little-lemon-table-booking
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the local development server:**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
+
+4. **Run automated unit tests:**
+   ```bash
+   npm test
+   ```
+   Runs 23 tests verifying form validation, reducer state transitions, and API utilities.
+
+5. **Run linter and build:**
+   ```bash
+   npm run lint   # Code quality check (0 warnings, 0 errors)
+   npm run build  # Compiles production bundle into dist/
+   ```
+
+---
+
+## Peer Review Evaluation Rubric
+
+This section maps directly to the Meta Front-End Capstone peer review criteria:
+
+| Rubric Question | Implementation Details | File References |
+| :--- | :--- | :--- |
+| **1. UX / UI Design & Implementation** | Adheres to official Little Lemon brand specifications: primary lemon green (`#495E57`), lemon yellow (`#F4CE14`), peach accents, **Markazi Text** for serif headings, and **Karla** for interface/body text. Features a hero banner, weekly specials, customer testimonials, and founder story. | `src/index.css`<br>`src/components/Hero.jsx`<br>`src/components/Specials.jsx` |
+| **2. Accessibility (a11y)** | WCAG 2.1 compliant. Includes `<a href="#main-content" class="skip-link">`, explicit `<label for="...">` associations, `aria-required`, `aria-invalid`, `aria-describedby` error announcements, `role="alert"` live regions, and full keyboard navigation. | `src/components/BookingForm.jsx`<br>`src/components/FormField.jsx`<br>`src/components/Header.jsx` |
+| **3. Unit Tests** | 23 passing tests covering component rendering, field labels, HTML5 validation attributes, JS validation functions, `initializeTimes`, `updateTimes` reducer transitions, and simulated submission. | `src/tests/BookingForm.test.jsx`<br>`src/tests/bookingUtils.test.js` |
+| **4. Functional Booking Form & Validation** | Dynamic date selection triggers `updateTimes` to refresh available slots. Implements dual-layer validation (HTML5 attributes + JS validation) with instant inline error alerts and summary banner. | `src/components/BookingForm.jsx`<br>`src/utils/validation.js`<br>`src/utils/bookingUtils.js` |
+| **5. Semantics & Responsiveness** | Built entirely with semantic HTML5 (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<fieldset>`, `<footer>`). Responsive across mobile (320px+), tablet, and desktop viewports using CSS Grid and Flexbox. | `src/App.jsx`<br>`src/index.css`<br>`index.html` |
+| **6. Git Repository & Commits** | Structured with progressive, conventional commit history across each development milestone (scaffolding, styling, UI components, booking logic, tests, and CI/CD). | Git commit history |
+| **7. Code Structure & Maintainability** | Clean modular architecture separating components, constants, utility functions, and test files. Comprehensive JSDoc docstrings and descriptive naming throughout. | `src/components/`<br>`src/utils/`<br>`src/constants/` |
+| **8. Edge Cases & Error Handling** | Prevents selecting past dates, clamps guest range (1–10), validates email syntax, handles API submission failures with accessible error banners, and falls back to default times if no slots are available. | `src/utils/bookingUtils.js`<br>`src/utils/validation.js` |
+| **9. Documentation & Setup** | Clear setup instructions, project directory structure, test commands, and deployment guidance provided. | `README.md` |
 
 ---
 
 ## Project Structure
 
 ```
-Meta_Capstone/
+little-lemon-table-booking/
+├── .github/workflows/deploy.yml   # GitHub Actions CI/CD deployment workflow
 ├── public/
-│   ├── favicon.svg
-│   ├── icons.svg
-│   └── images/
-│       ├── bruschetta.jpg
-│       ├── greek-salad.jpg
-│       ├── hero-platter.jpg
-│       ├── lemon-dessert.jpg
-│       └── mario-adrian.jpg
+│   ├── favicon.svg               # Little Lemon brand favicon
+│   ├── icons.svg                 # SVG sprite sheet
+│   └── images/                   # Optimized food & restaurant photography
 ├── src/
 │   ├── components/
-│   │   ├── About.jsx             # Story of founders Mario & Adrian
-│   │   ├── BookingForm.jsx       # Reservation form with validation
-│   │   ├── BookingSection.jsx    # Booking state manager & reducer container
+│   │   ├── About.jsx             # Little Lemon founders story (Mario & Adrian)
+│   │   ├── BookingForm.jsx       # Table reservation form with dual validation
+│   │   ├── BookingSection.jsx    # useReducer container for booking state
 │   │   ├── ConfirmedBooking.jsx  # Confirmation receipt with booking ID
-│   │   ├── Footer.jsx            # Navigation, contact details, hours, social links
-│   │   ├── FormField.jsx         # Accessible reusable form field wrapper
-│   │   ├── Header.jsx            # Responsive navigation bar & mobile drawer
-│   │   ├── Hero.jsx              # Hero banner with CTA to reservation section
-│   │   ├── NotificationModal.jsx # Modal dialog for online menu & order notices
-│   │   ├── Specials.jsx          # Weekly dish specials with delivery badges
+│   │   ├── Footer.jsx            # Footer navigation, contact info, and hours
+│   │   ├── FormField.jsx         # Accessible form field wrapper (a11y)
+│   │   ├── Header.jsx            # Responsive navigation & mobile menu drawer
+│   │   ├── Hero.jsx              # Hero banner with reservation CTA
+│   │   ├── NotificationModal.jsx # Accessible modal dialog for notices
+│   │   ├── Specials.jsx          # Weekly dish specials with delivery tags
 │   │   └── Testimonials.jsx      # Customer review cards with star ratings
 │   ├── constants/
-│   │   ├── occasions.js          # Dining slots, occasions, and seating options
+│   │   ├── occasions.js          # Dining times, occasions, and seating options
 │   │   └── restaurantData.js     # Little Lemon menu specials, bio, and reviews
 │   ├── tests/
-│   │   ├── BookingForm.test.jsx  # Vitest component & form validation tests
-│   │   └── bookingUtils.test.js  # Vitest reducer, time & API unit tests
+│   │   ├── BookingForm.test.jsx  # Tests for form rendering & validation
+│   │   └── bookingUtils.test.js  # Tests for reducer & API time functions
 │   ├── utils/
 │   │   ├── bookingUtils.js       # fetchAPI, submitAPI, initializeTimes, updateTimes
-│   │   └── validation.js         # Date, guest count, email, and name validators
-│   ├── App.jsx                   # Application layout and section coordinator
-│   ├── index.css                 # Little Lemon design system and CSS stylesheet
-│   ├── main.jsx                  # React 19 application entrypoint
-│   └── setupTests.js             # Vitest test setup with @testing-library/jest-dom
-├── index.html                    # SEO meta tags, Google Fonts, and root mount
-├── package.json
-└── vite.config.js                # Vite + React + Vitest test runner configuration
+│   │   └── validation.js         # Input validation functions & patterns
+│   ├── App.jsx                   # Main layout and coordinator
+│   ├── index.css                 # Complete Little Lemon responsive stylesheet
+│   ├── main.jsx                  # React application entrypoint
+│   └── setupTests.js             # Vitest test environment configuration
+├── index.html                    # HTML5 entrypoint with Google Fonts & SEO meta
+├── package.json                  # Dependencies and npm scripts
+└── vite.config.js                # Vite, base path, and Vitest configuration
 ```
 
 ---
 
-## Available Scripts
+## Live Deployment (GitHub Pages)
 
-In the project root, run:
+This repository includes a GitHub Actions workflow in `.github/workflows/deploy.yml` that automatically tests, lints, builds, and publishes to **GitHub Pages** on every push to `main`.
 
-### `npm run dev`
-Starts the local development server with Hot Module Replacement (HMR).
-
-### `npm test`
-Runs the Vitest test suite testing reducer functions, time calculations, form rendering, HTML5 validation attributes, and user interaction.
-
-### `npm run lint`
-Runs Oxlint across the repository to verify code quality with zero warnings or errors.
-
-### `npm run build`
-Compiles and bundles the production-optimized client assets into the `dist/` directory.
-
-### `npm run preview`
-Locally previews the production build.
-
----
-
-## Deployment & GitHub Actions
-
-This repository includes a production-ready CI/CD workflow (`.github/workflows/deploy.yml`) that automatically tests, lints, builds, and deploys the application to **GitHub Pages** on every push.
-
-### Setting Up GitHub Pages:
-1. Push this repository to your GitHub account:
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git push -u origin main
-   ```
-2. Navigate to your repository on GitHub: **Settings > Pages**.
-3. Under **Build and deployment > Source**, select **GitHub Actions**.
-4. The workflow will automatically run and publish your site at:
-   `https://<your-username>.github.io/<your-repo-name>/`
-
----
-
-## Meta Capstone Peer Review Verification Checklist
-
-| Rubric Checkpoint | Implementation & File Location | Verification Command |
-| :--- | :--- | :--- |
-| **Semantic HTML & WCAG Accessibility** | Semantic elements (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<fieldset>`, `<footer>`) with ARIA attributes and focus management in [Header.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/Header.jsx), [BookingForm.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/BookingForm.jsx), and [FormField.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/FormField.jsx). | Audited for WCAG 2.1 compliance |
-| **Responsive UI & Design System** | Official Little Lemon palette (`#495E57`, `#F4CE14`), Markazi Text headings, Karla body font, responsive mobile-first grid in [index.css](file:///c:/Users/lenovo/Meta_Capstone/src/index.css). | Tested across mobile, tablet, and desktop viewports |
-| **State Management with `useReducer`** | `initializeTimes` and `updateTimes` reducer functions managing dynamic booking slots in [bookingUtils.js](file:///c:/Users/lenovo/Meta_Capstone/src/utils/bookingUtils.js) wired to `useReducer` in [BookingSection.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/BookingSection.jsx). | Tested via [bookingUtils.test.js](file:///c:/Users/lenovo/Meta_Capstone/src/tests/bookingUtils.test.js) |
-| **Seeded Random API Simulation** | `fetchAPI` slot generation with `seededRandom` and deterministic `getDateSeed`, plus simulated `submitAPI` with latency and storage in [bookingUtils.js](file:///c:/Users/lenovo/Meta_Capstone/src/utils/bookingUtils.js). | Tested via [bookingUtils.test.js](file:///c:/Users/lenovo/Meta_Capstone/src/tests/bookingUtils.test.js) |
-| **Dual-Layer Form Validation** | HTML5 attributes (`required`, `min`, `max`, `type`, `pattern`) combined with custom JavaScript validation functions in [validation.js](file:///c:/Users/lenovo/Meta_Capstone/src/utils/validation.js) and [BookingForm.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/BookingForm.jsx). | Tested via [BookingForm.test.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/tests/BookingForm.test.jsx) |
-| **Booking Confirmation** | Confirmed reservation receipt displaying unique confirmation ID, summary, and reset action in [ConfirmedBooking.jsx](file:///c:/Users/lenovo/Meta_Capstone/src/components/ConfirmedBooking.jsx). | Interactive UI confirmation flow |
-| **Unit Test Coverage** | 23 passing Vitest tests covering static text, HTML5 attributes, JS validation, reducer transitions, and submission in [tests/](file:///c:/Users/lenovo/Meta_Capstone/src/tests/). | `npm test` (23 passed) |
-| **Code Quality & Build** | 0 Oxlint warnings or errors; production build bundle generated with zero warnings in [dist/](file:///c:/Users/lenovo/Meta_Capstone/dist/). | `npm run lint` & `npm run build` |
+To enable GitHub Pages:
+1. Go to repository **Settings > Pages**.
+2. Under **Build and deployment > Source**, select **GitHub Actions**.
+3. The deployed site will be available at:
+   `https://musthabasm.github.io/little-lemon-table-booking/`
